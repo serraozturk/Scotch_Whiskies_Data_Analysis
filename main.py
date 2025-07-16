@@ -70,7 +70,7 @@ def main():
 
     # 8)  similarity
     weights = {
-        'tat': 0.36, 'aroma': 0.27, 'finish': 0.18,
+        'taste': 0.36, 'aroma': 0.27, 'finish': 0.18,
         'body': 0.07, 'color': 0.02,
         'age': 0.05,
         'percent': 0.07  # %100 in the end.

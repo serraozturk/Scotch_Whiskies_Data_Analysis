@@ -65,6 +65,48 @@ def main():
     df['score_finish'] = Xn[finish_feats].mean(axis=1) if finish_feats else 0
     df['score_body']   = Xn[body_feats].mean(axis=1)   if body_feats else 0
     df['score_color']  = Xn[color_feats].mean(axis=1)  if color_feats else 0
+    df['score_age'] = Xn['age']
+    df['score_percent'] = Xn['percent']
+
+    # 8)  similarity
+    weights = {
+        'tat': 0.36, 'aroma': 0.27, 'finish': 0.18,
+        'body': 0.07, 'color': 0.02,
+        'age': 0.05,
+        'percent': 0.07  # %100 in the end.
+    }
+    df['custom_sim'] = (
+            df['score_tat'] * weights['tat'] +
+            df['score_aroma'] * weights['aroma'] +
+            df['score_finish'] * weights['finish'] +
+            df['score_body'] * weights['body'] +
+            df['score_color'] * weights['color'] +
+            df['score_age'] * weights['age'] +
+            df['score_percent'] * weights['percent']
+    )
+
+    # 9) Recommendations based on Bunnahabhain reference
+    if 'name' in df.columns:
+        mask = df['name'].str.lower() == 'bunnahabhain'
+        if mask.any():
+            ref_sim = df.loc[mask, 'custom_sim'].iloc[0]
+            df['sim_diff'] = (df['custom_sim'] - ref_sim).abs()
+            similar5 = df[~mask].nsmallest(5, 'sim_diff')[['name','sim_diff']]
+            far5   = df[~mask].nlargest(5,  'sim_diff')[['name','sim_diff']]
+        else:
+            similar5, far5 = pd.DataFrame(), pd.DataFrame()
+    else:
+        similar5, far5 = pd.DataFrame(), pd.DataFrame()
+
+    # 10) Factor importance
+    cats = ['score_tat','score_aroma','score_finish','score_body','score_color']
+    corrs = df[cats+['custom_sim']].corr()['custom_sim'].abs().sort_values(ascending=False)
+    rf = RandomForestRegressor(n_estimators=200, random_state=42)
+    rf.fit(df[cats], df['custom_sim'])
+    importances = pd.Series(rf.feature_importances_, index=cats).sort_values(ascending=False)
+
+    # 11) Region × aroma profile
+    region_aroma = df.groupby('region', observed=True)[aroma_feats].mean() if aroma_feats else pd.DataFrame()
 
 
 if __name__ == '__main__':

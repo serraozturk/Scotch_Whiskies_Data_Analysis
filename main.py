@@ -47,7 +47,7 @@ def main():
     pal_feats    = [c for c in df.columns if c.startswith('pal_')]
     fin_feats    = [c for c in df.columns if c.startswith('fin_')]
     finish_feats = pal_feats + fin_feats
-    tat_feats    = [c for c in nose_feats if any(x in c for x in ['fruit','sweet','dry','sherry'])]
+    taste_feats    = [c for c in nose_feats if any(x in c for x in ['fruit','sweet','dry','sherry'])]
     aroma_feats  = [c for c in nose_feats if any(x in c for x in ['peat','smoke','sea','grass','spicy'])]
 
   # 5) Dominant color category

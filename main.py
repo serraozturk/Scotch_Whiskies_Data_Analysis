@@ -16,6 +16,17 @@ def main():
     df.columns = cols
 
     # 2) Remove unnecessary unnamed columns and rename critical columns -- important
+    rename_map = {
+        'unnamed: 0_level_0_name': 'name',
+        'unnamed: 69_level_0_age': 'age',
+        'unnamed: 70_level_0_score': 'score',
+        'unnamed: 72_level_0_region': 'region',
+        'unnamed: 73_level_0_district': 'district'
+    }
+    df = df.rename(columns=rename_map)
+    df = df.drop(columns=[c for c in df.columns if c.endswith('_%') or 'unnamed: 71' in c], errors='ignore')
+
+
 
 if __name__ == '__main__':
     main()

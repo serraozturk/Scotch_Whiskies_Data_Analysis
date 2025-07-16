@@ -60,7 +60,7 @@ def main():
     Xn = (X - X.min()) / (X.max() - X.min())
 
     # 7) Calculate category scores
-    df['score_tat']    = Xn[tat_feats].mean(axis=1)    if tat_feats else 0
+    df['score_taste']    = Xn[taste_feats].mean(axis=1)    if taste_feats else 0
     df['score_aroma']  = Xn[aroma_feats].mean(axis=1)  if aroma_feats else 0
     df['score_finish'] = Xn[finish_feats].mean(axis=1) if finish_feats else 0
     df['score_body']   = Xn[body_feats].mean(axis=1)   if body_feats else 0

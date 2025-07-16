@@ -99,7 +99,7 @@ def main():
         similar5, far5 = pd.DataFrame(), pd.DataFrame()
 
     # 10) Factor importance
-    cats = ['score_tat','score_aroma','score_finish','score_body','score_color']
+    cats = ['score_taste','score_aroma','score_finish','score_body','score_color']
     corrs = df[cats+['custom_sim']].corr()['custom_sim'].abs().sort_values(ascending=False)
     rf = RandomForestRegressor(n_estimators=200, random_state=42)
     rf.fit(df[cats], df['custom_sim'])

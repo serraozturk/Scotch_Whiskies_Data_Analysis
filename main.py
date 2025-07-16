@@ -20,6 +20,7 @@ def main():
         'unnamed: 0_level_0_name': 'name',
         'unnamed: 69_level_0_age': 'age',
         'unnamed: 70_level_0_score': 'score',
+        'unnamed: 71_level_0_%': 'percent',
         'unnamed: 72_level_0_region': 'region',
         'unnamed: 73_level_0_district': 'district'
     }

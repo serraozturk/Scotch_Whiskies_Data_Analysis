@@ -33,10 +33,11 @@ def main():
     df['age'] = pd.to_numeric(df['age'], errors='coerce')
     df['score'] = pd.to_numeric(df['score'], errors='coerce')
     if 'region' in df.columns:
-        # to avoid duplicate labels like 'low' vs 'Low'
-        df['region'] = df['region'].astype(str).str.strip().str.title().astype('category')
-    if 'district' in df.columns:
-        df['district'] = df['district'].astype(str).str.strip().str.title().astype('category')
+        # clean up stray spaces/case
+        df['region'] = df['region'].astype(str) \
+            .str.strip() \
+            .str.title() \
+            .astype('category')
 
     # 4) Feature groups (dynamically) based on csv file
     color_feats  = [c for c in df.columns if c.startswith('color_')]

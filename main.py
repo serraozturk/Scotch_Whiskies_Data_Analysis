@@ -119,6 +119,40 @@ def main():
         aroma_scores.append({'aroma':feat.replace('nose_',''), 'score_if_0':means.get(0,np.nan), 'score_if_1':means.get(1,np.nan)})
     aroma_score_df = pd.DataFrame(aroma_scores)
 
+  # 14) we can see the result.
+
+    print("\n=== Top 5 Similar to Bunnahabhain ===")
+    print(similar5.to_string(index=False))
+    print("\n=== Top 5 Farthest from Bunnahabhain ===")
+    print(far5.to_string(index=False))
+    print("\n=== Category Correlations ===")
+    print(corrs.to_frame('Correlation').to_string())
+    print("\n=== RandomForest Feature Importances ===")
+    print(importances.to_frame('Importance').to_string())
+    print("\n=== Region × Aroma Profile ===")
+    print(region_aroma.to_string())
+    print("\n=== Avg SCORE by REGION ===")
+    print(avg_reg.to_string())
+    print("\n=== Avg SCORE by COLOR ===")
+    print(avg_col.to_string())
+    print("\n=== Aroma-based Avg SCORE ===")
+    print(aroma_score_df.to_string(index=False))
+
+    # 15) I generated the graphs for each of them.
+    if not similar5.empty:
+        similar5.set_index('name')['sim_diff'].plot(kind='bar', title='Top 5 Similar to Bunnahabhain')
+        plt.tight_layout(); plt.savefig('top5_similar.png'); plt.clf()
+    if not far5.empty:
+        far5.set_index('name')['sim_diff'].plot(kind='bar', title='Top 5 Farthest from Bunnahabhain')
+        plt.tight_layout(); plt.savefig('top5_farthest.png'); plt.clf()
+    importances.plot(kind='bar', title='Feature Importances'); plt.tight_layout(); plt.savefig('feature_importances.png'); plt.clf()
+    if not avg_reg.empty:
+        avg_reg.plot(kind='bar', title='Average Score by Region'); plt.tight_layout(); plt.savefig('avg_score_region.png'); plt.clf()
+    if not avg_col.empty:
+        avg_col.plot(kind='bar', title='Average Score by Color'); plt.tight_layout(); plt.savefig('avg_score_color.png'); plt.clf()
+    if not aroma_score_df.empty:
+        aroma_score_df.set_index('aroma')[['score_if_0','score_if_1']].plot(kind='bar', title='Aroma-based Average Score')
+        plt.tight_layout(); plt.savefig('aroma_avg_score.png'); plt.clf()
 
 if __name__ == '__main__':
     main()

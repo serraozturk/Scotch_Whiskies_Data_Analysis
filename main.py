@@ -107,6 +107,17 @@ def main():
 
     # 11) Region × aroma profile
     region_aroma = df.groupby('region', observed=True)[aroma_feats].mean() if aroma_feats else pd.DataFrame()
+    
+   # 12) Average SCORE by REGION & COLOR
+    avg_reg = df.groupby('region', observed=True)['score'].mean().sort_values(ascending=False) if 'region' in df.columns else pd.Series()
+    avg_col = df.groupby('color', observed=True)['score'].mean().sort_values(ascending=False)  if 'color' in df.columns  else pd.Series()
+
+    # 13) Aroma-based SCORE
+    aroma_scores = []
+    for feat in aroma_feats:
+        means = df.groupby(feat, observed=True)['score'].mean().to_dict()
+        aroma_scores.append({'aroma':feat.replace('nose_',''), 'score_if_0':means.get(0,np.nan), 'score_if_1':means.get(1,np.nan)})
+    aroma_score_df = pd.DataFrame(aroma_scores)
 
 
 if __name__ == '__main__':

@@ -48,6 +48,21 @@ def main():
     tat_feats    = [c for c in nose_feats if any(x in c for x in ['fruit','sweet','dry','sherry'])]
     aroma_feats  = [c for c in nose_feats if any(x in c for x in ['peat','smoke','sea','grass','spicy'])]
 
+  # 5) Dominant color category
+    if color_feats:
+        df['color'] = df[color_feats].idxmax(axis=1).str.replace('color_', '').astype('category')
+
+    # 6) Min–max normalize all features
+    all_feats = tat_feats + aroma_feats + finish_feats + body_feats + color_feats
+    X = df[all_feats].astype(float)
+    Xn = (X - X.min()) / (X.max() - X.min())
+
+    # 7) Calculate category scores
+    df['score_tat']    = Xn[tat_feats].mean(axis=1)    if tat_feats else 0
+    df['score_aroma']  = Xn[aroma_feats].mean(axis=1)  if aroma_feats else 0
+    df['score_finish'] = Xn[finish_feats].mean(axis=1) if finish_feats else 0
+    df['score_body']   = Xn[body_feats].mean(axis=1)   if body_feats else 0
+    df['score_color']  = Xn[color_feats].mean(axis=1)  if color_feats else 0
 
 
 if __name__ == '__main__':

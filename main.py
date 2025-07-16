@@ -55,7 +55,7 @@ def main():
         df['color'] = df[color_feats].idxmax(axis=1).str.replace('color_', '').astype('category')
 
     # 6) Min–max normalize all features
-    all_feats = tat_feats + aroma_feats + finish_feats + body_feats + color_feats + ['age','percent']
+    all_feats = taste_feats + aroma_feats + finish_feats + body_feats + color_feats + ['age','percent']
     X = df[all_feats].astype(float)
     Xn = (X - X.min()) / (X.max() - X.min())
 

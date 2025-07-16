@@ -76,7 +76,7 @@ def main():
         'percent': 0.07  # %100 in the end.
     }
     df['custom_sim'] = (
-            df['score_tat'] * weights['tat'] +
+            df['score_taste'] * weights['taste'] +
             df['score_aroma'] * weights['aroma'] +
             df['score_finish'] * weights['finish'] +
             df['score_body'] * weights['body'] +

@@ -25,7 +25,7 @@ def main():
         'unnamed: 73_level_0_district': 'district'
     }
     df = df.rename(columns=rename_map)
-    df = df.drop(columns=[c for c in df.columns if c.endswith('_%') or 'unnamed: 71' in c], errors='ignore')
+    df = df.drop(columns=[c for c in df.columns if 'unnamed: 71' in c], errors='ignore')
 
     # Cleaning done: drop duplicates
     df = df.drop_duplicates().dropna(subset=['name', 'age', 'score'])
